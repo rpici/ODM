@@ -9,5 +9,5 @@ branches:
 script:
   - pip install catkin-pkg
   - sudo apt-get install python-opencv -y
-  - "bash configure.sh"
+  - "bash configure.sh install"
   - "mkdir build && cd build && cmake .. && make && cd .."
