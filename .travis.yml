@@ -8,4 +8,3 @@ branches:
     - travis
 script:
   - "bash configure.sh install"
-  - "python -m unittest discover tests"
