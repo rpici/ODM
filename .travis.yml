@@ -12,5 +12,5 @@ script:
   - "bash configure.sh install"
   - "cd build"
   - "cmake .."
-  - "make
+  - "make"
   - "cd .."
