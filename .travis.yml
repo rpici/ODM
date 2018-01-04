@@ -1,0 +1,13 @@
+sudo: required
+dist: trusty
+language: python
+python:
+  - 2.7
+branches:
+  only:
+    - travis
+script:
+  - pip install catkin-pkg
+  - sudo apt-get install python-opencv -y
+  - "bash configure.sh"
+  - "mkdir build && cd build && cmake .. && make && cd .."
