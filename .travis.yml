@@ -10,7 +10,3 @@ script:
   - pip install catkin-pkg
   - sudo apt-get install python-opencv -y
   - "bash configure.sh install"
-  - "cd build"
-  - "cmake .."
-  - "make"
-  - "cd .."
