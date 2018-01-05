@@ -1,10 +1,15 @@
 sudo: required
-dist: trusty
-language: python
-python:
-  - 2.7
 branches:
   only:
     - travis
+services:
+  - docker
+
+before_install:
+  - docker pull ubuntu:16.04
+  - docker run --name odm -it ubuntu:16.04 bash
+  - docker exec -it odm apt-get update
+  - docker exec -it odm apt-get -y install git
+  - docker exec -it odm git clone -b travis https://github.com/OpenDroneMap/OpenDroneMap
 script:
-  - "bash configure.sh install"
+  - docker exec -it odm OpenDroneMap/configure.sh install
