@@ -7,7 +7,7 @@ services:
 
 before_install:
   - docker pull ubuntu:16.04
-  - docker run --name odm -it ubuntu:16.04 bash
+  - docker run --name odm -d ubuntu:16.04
   - docker exec -it odm apt-get update
   - docker exec -it odm apt-get -y install git
   - docker exec -it odm git clone -b travis https://github.com/OpenDroneMap/OpenDroneMap
