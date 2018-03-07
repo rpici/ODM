@@ -28,7 +28,8 @@ install() {
                          gdal-bin \
                          libgeotiff-dev \
                          pkg-config \
-                         libjsoncpp-dev
+                         libjsoncpp-dev \
+                         python-gdal
 
     echo "Getting CMake 3.1 for MVS-Texturing"
     apt-get install -y software-properties-common python-software-properties
@@ -79,9 +80,6 @@ install() {
                         appsettings \
                         loky
 
-    echo "Installing CGAL dependencies"
-    apt-get install -y -qq libgmp-dev libmpfr-dev
-
     echo "Installing Ecto Dependencies"
     pip install -U catkin-pkg
     apt-get install -y -qq python-empy \
@@ -98,6 +96,10 @@ install() {
     apt-get install -y -qq swig2.0 \
                          python-wheel \
                          libboost-log-dev
+
+
+    echo "Installing split-merge Dependencies"
+    pip install -U scipy shapely numpy pyproj
 
     pip install -U https://github.com/OpenDroneMap/gippy/archive/v0.3.9.tar.gz
 
