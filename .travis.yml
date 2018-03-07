@@ -8,4 +8,4 @@ services:
 before_install:
   - docker pull ubuntu:16.04
 script:
-  - docker run ubuntu:16.04 /bin/bash -c "apt-get update; apt-get -y install git; git clone -b travis https://github.com/OpenDroneMap/OpenDroneMap; OpenDroneMap/configure.sh install"
+  - docker run ubuntu:16.04 /bin/bash -c "apt-get update && apt-get -y install git && git clone -b travis https://github.com/OpenDroneMap/OpenDroneMap && OpenDroneMap/configure.sh install"
