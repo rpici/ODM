@@ -13,4 +13,7 @@ jobs:
     steps:
       - checkout
       - run: export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+      - run: echo zdata tzdata/Areas select Europe >> preseed.txt
+      - run: echo tzdata tzdata/Zones/Europe select London >> preseed.txt
+      - run: debconf-set-selections preseed.txt
       - run: apt-get update && apt-get -y install software-properties-common && ./configure.sh install
