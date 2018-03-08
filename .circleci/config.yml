@@ -6,11 +6,11 @@ jobs:
     docker:
       - image: ubuntu:16.04
     parallelism: 1
-    resource_class: large
     working_directory: ~/odm
     branches:
       only:
         - travis
     steps:
       - checkout
+      - run: dpkg-reconfigure --frontend noninteractive tzdata
       - run: apt-get update && apt-get -y install software-properties-common && ./configure.sh install
