@@ -12,4 +12,5 @@ jobs:
       only:
         - travis
     steps:
-      - run: apt-get update && apt-get -y install software-properties-common && OpenDroneMap/configure.sh install
+      - checkout
+      - run: apt-get update && apt-get -y install software-properties-common && configure.sh install
