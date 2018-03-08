@@ -12,5 +12,5 @@ jobs:
         - travis
     steps:
       - checkout
-      - run: dpkg-reconfigure --frontend noninteractive tzdata
+      - run: export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
       - run: apt-get update && apt-get -y install software-properties-common && ./configure.sh install
