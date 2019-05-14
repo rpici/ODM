@@ -397,7 +397,8 @@ void OdmOrthoPhoto::createOrthoPhoto()
 
     // Init ortho photo
     try{
-        photo_ = cv::Mat::zeros(rowRes, colRes, CV_8UC4) + cv::Scalar(255, 255, 255, 0);
+        const unsigned short max_16bit_val = 65535;
+        photo_ = cv::Mat::zeros(rowRes, colRes, CV_16UC4) + cv::Scalar(max_16bit_val, max_16bit_val, max_16bit_val, 0);
         depth_ = cv::Mat::zeros(rowRes, colRes, CV_32F) - std::numeric_limits<float>::infinity();
     }catch(const cv::Exception &e){
         std::cerr << "Couldn't allocate enough memory to render the orthophoto (" << colRes << "x" << rowRes << " cells = " << ((long long)colRes * (long long)rowRes * 4) << " bytes). Try to reduce the -resolution parameter or add more RAM.\n";
@@ -493,7 +494,7 @@ void OdmOrthoPhoto::createOrthoPhoto()
     {
         // The material of the current submesh.
         pcl::TexMaterial material = mesh.tex_materials[t];
-        texture = cv::imread(material.tex_file);
+        texture = cv::imread(material.tex_file, cv::IMREAD_UNCHANGED); //IMREAD_ANYDEPTH doesn't preserve 16-bit depth for some reason, so use IMREAD_UNCHANGED.
 
         // Check for missing files.
         if(texture.empty())
@@ -1004,7 +1005,7 @@ void OdmOrthoPhoto::drawTexturedTriangle(const cv::Mat &texture, const pcl::Vert
 void OdmOrthoPhoto::renderPixel(int row, int col, float s, float t, const cv::Mat &texture)
 {
     // The colors of the texture pixels. tl : top left, tr : top right, bl : bottom left, br : bottom right.
-    cv::Vec3b tl, tr, bl, br;
+    cv::Vec3w tl, tr, bl, br;
     
     // The offset of the texture coordinate from its pixel positions.
     float leftF, topF;
@@ -1023,10 +1024,10 @@ void OdmOrthoPhoto::renderPixel(int row, int col, float s, float t, const cv::Ma
     left = static_cast<int>(leftF);
     top = static_cast<int>(topF);
     
-    tl = texture.at<cv::Vec3b>(top, left);
-    tr = texture.at<cv::Vec3b>(top, left+1);
-    bl = texture.at<cv::Vec3b>(top+1, left);
-    br = texture.at<cv::Vec3b>(top+1, left+1);
+    tl = texture.at<cv::Vec3w>(top, left);
+    tr = texture.at<cv::Vec3w>(top, left+1);
+    bl = texture.at<cv::Vec3w>(top+1, left);
+    br = texture.at<cv::Vec3w>(top+1, left+1);
     
     // The interpolated color values.
     float r = 0.0f, g = 0.0f, b = 0.0f;
@@ -1049,7 +1050,7 @@ void OdmOrthoPhoto::renderPixel(int row, int col, float s, float t, const cv::Ma
     b += static_cast<float>(bl[0]) * dr * dt;
     b += static_cast<float>(br[0]) * dl * dt;
     
-    photo_.at<cv::Vec4b>(row,col) = cv::Vec4b(static_cast<unsigned char>(b), static_cast<unsigned char>(g), static_cast<unsigned char>(r), 255);
+    photo_.at<cv::Vec4w>(row,col) = cv::Vec4w(static_cast<unsigned char>(b), static_cast<unsigned char>(g), static_cast<unsigned char>(r), 65535);
 }
 
 void OdmOrthoPhoto::getBarycentricCoordinates(pcl::PointXYZ v1, pcl::PointXYZ v2, pcl::PointXYZ v3, float x, float y, float &l1, float &l2, float &l3) const
