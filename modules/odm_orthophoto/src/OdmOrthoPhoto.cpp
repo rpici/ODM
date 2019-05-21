@@ -1050,7 +1050,8 @@ void OdmOrthoPhoto::renderPixel(int row, int col, float s, float t, const cv::Ma
     b += static_cast<float>(bl[0]) * dr * dt;
     b += static_cast<float>(br[0]) * dl * dt;
     
-    photo_.at<cv::Vec4w>(row,col) = cv::Vec4w(static_cast<unsigned char>(b), static_cast<unsigned char>(g), static_cast<unsigned char>(r), 65535);
+    typedef ushort ChannelDataType;
+    photo_.at<cv::Vec4w>(row,col) = cv::Vec4w(static_cast<ChannelDataType>(b), static_cast<ChannelDataType>(g), static_cast<ChannelDataType>(r), 65535);
 }
 
 void OdmOrthoPhoto::getBarycentricCoordinates(pcl::PointXYZ v1, pcl::PointXYZ v2, pcl::PointXYZ v3, float x, float y, float &l1, float &l2, float &l3) const
